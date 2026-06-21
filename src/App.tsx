@@ -3,6 +3,7 @@ import { useLang } from './context/LangContext';
 import { UI } from './data/ui-strings';
 import type { Lang } from './data/ui-strings';
 import { DATA, AGENT_ORDER, type AgentId } from './data/agents';
+import type { BookChapterRef } from './data/agents';
 import { route, escapeHtml } from './utils/route';
 import { sleep } from './hooks/useTypewriter';
 import type { MessageData } from './types';
@@ -33,6 +34,7 @@ export default function App() {
   const [sidebarKey, setSidebarKey] = useState(0);
   const [agentsOnline, setAgentsOnline] = useState(0);
   const [theme, setTheme] = useState<Theme>('dark');
+  const [logScrollTopKey, setLogScrollTopKey] = useState(0);
 
   const genRef = useRef(0);
   const chainRef = useRef<Promise<void>>(Promise.resolve());
@@ -94,6 +96,7 @@ export default function App() {
       next.set(id, []);
       return next;
     });
+    setLogScrollTopKey(k => k + 1);
     activateTab(id, a.tab, silent);
 
     appendMsg(id, {
@@ -230,6 +233,19 @@ export default function App() {
     }
   }
 
+  function handleChapterClick(chapter: BookChapterRef) {
+    const tabId = chapter.file.replace('.md', '');
+    setTabs(prev => prev.some(t => t.id === tabId) ? prev : [...prev, { id: tabId, label: chapter.title }]);
+    setTabMessages(prev => {
+      const next = new Map(prev);
+      if (!next.get(tabId)?.length) {
+        next.set(tabId, [{ kind: 'chapter', id: nextId(), chapter }]);
+      }
+      return next;
+    });
+    setActiveTab(tabId);
+  }
+
   function handleSubmit() {
     const v = inputValue.trim();
     if (!v) return;
@@ -298,7 +314,7 @@ export default function App() {
           sidebarKey={sidebarKey}
         />
         <main className="panel">
-          <Log messages={tabMessages.get(activeTab) ?? []} onChipClick={trigger} />
+          <Log messages={tabMessages.get(activeTab) ?? []} onChipClick={trigger} onChapterClick={handleChapterClick} scrollTopKey={logScrollTopKey} />
           <Dock
             value={inputValue}
             onChange={setInputValue}

@@ -4,7 +4,9 @@ import { AgentMessage } from './AgentMessage';
 import { WelcomeMessage } from './WelcomeMessage';
 import { FallbackMessage } from './FallbackMessage';
 import { UserMessage } from './UserMessage';
+import { ChapterViewer } from './ChapterViewer';
 import type { AgentId } from '../../data/agents';
+import type { BookChapter } from '../../data/book-chapters';
 
 interface ToolLineSystemData {
   kind: 'system-tool';
@@ -17,16 +19,16 @@ interface ToolLineSystemData {
 interface LogProps {
   messages: MessageData[];
   onChipClick: (id: AgentId) => void;
+  onChapterClick: (chapter: BookChapter) => void;
+  scrollTopKey: number;
 }
 
-export function Log({ messages, onChipClick }: LogProps) {
+export function Log({ messages, onChipClick, onChapterClick, scrollTopKey }: LogProps) {
   const logRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (logRef.current) {
-      logRef.current.scrollTop = logRef.current.scrollHeight;
-    }
-  }, [messages]);
+    if (logRef.current) logRef.current.scrollTop = 0;
+  }, [scrollTopKey]);
 
   return (
     <div className="log" ref={logRef}>
@@ -39,7 +41,7 @@ export function Log({ messages, onChipClick }: LogProps) {
             return <UserMessage key={msg.id} text={msg.text} />;
           }
           if (msg.kind === 'agent') {
-            return <AgentMessage key={msg.id} message={msg} />;
+            return <AgentMessage key={msg.id} message={msg} onChapterClick={onChapterClick} />;
           }
           if (msg.kind === 'fallback') {
             return (
@@ -50,6 +52,9 @@ export function Log({ messages, onChipClick }: LogProps) {
                 onChipClick={onChipClick}
               />
             );
+          }
+          if (msg.kind === 'chapter') {
+            return <ChapterViewer key={msg.id} chapter={msg.chapter} />;
           }
           if (msg.kind === 'system-tool') {
             const m = msg as ToolLineSystemData;
