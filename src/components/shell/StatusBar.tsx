@@ -7,9 +7,11 @@ interface StatusBarProps {
   agentsOnline: number;
   isReady: boolean;
   onLangChange: (l: Lang) => void;
+  theme: 'dark' | 'light';
+  onThemeToggle: () => void;
 }
 
-export function StatusBar({ agentsOnline, isReady, onLangChange }: StatusBarProps) {
+export function StatusBar({ agentsOnline, isReady, onLangChange, theme, onThemeToggle }: StatusBarProps) {
   const { lang } = useLang();
   const s = UI[lang];
   const [clock, setClock] = useState('--:--');
@@ -34,10 +36,6 @@ export function StatusBar({ agentsOnline, isReady, onLangChange }: StatusBarProp
     return () => clearTimeout(t);
   }, []);
 
-  function handleLang(l: Lang) {
-    onLangChange(l);
-  }
-
   return (
     <div className="status">
       <span className="seg online">
@@ -52,16 +50,25 @@ export function StatusBar({ agentsOnline, isReady, onLangChange }: StatusBarProp
           <span>{s.ctx}</span>{' '}
           <span className="meter"><i ref={meterRef} /></span>
         </span>
+        <button
+          type="button"
+          className="seg theme-tog"
+          onClick={onThemeToggle}
+          aria-label="Basculer le thème"
+          title={theme === 'dark' ? 'Mode clair' : 'Mode sombre'}
+        >
+          {theme === 'dark' ? '☀' : '🌙'}
+        </button>
         <span className="seg langtog" role="group" aria-label="language">
           <button
             type="button"
             className={lang === 'fr' ? 'on' : ''}
-            onClick={() => handleLang('fr')}
+            onClick={() => onLangChange('fr')}
           >FR</button>
           <button
             type="button"
             className={lang === 'en' ? 'on' : ''}
-            onClick={() => handleLang('en')}
+            onClick={() => onLangChange('en')}
           >EN</button>
         </span>
         <span className="seg clay">senior fullstack · IA</span>

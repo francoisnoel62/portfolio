@@ -9,9 +9,10 @@ interface TabsProps {
   tabs: Tab[];
   activeTab: string;
   onTabClick: (id: AgentId | 'welcome') => void;
+  onTabClose: (id: string) => void;
 }
 
-export function Tabs({ tabs, activeTab, onTabClick }: TabsProps) {
+export function Tabs({ tabs, activeTab, onTabClick, onTabClose }: TabsProps) {
   return (
     <div className="tabs" id="tabs">
       {tabs.map(tab => (
@@ -22,6 +23,14 @@ export function Tabs({ tabs, activeTab, onTabClick }: TabsProps) {
           onClick={() => onTabClick(tab.id as AgentId | 'welcome')}
         >
           <span className="dot" />{tab.label}
+          {tab.id !== 'welcome' && (
+            <button
+              type="button"
+              className="tab__close"
+              onClick={e => { e.stopPropagation(); onTabClose(tab.id); }}
+              aria-label="Fermer"
+            >×</button>
+          )}
         </div>
       ))}
     </div>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLang } from '../../context/LangContext';
 import { UI } from '../../data/ui-strings';
 import { DATA, AGENT_ORDER, type AgentId } from '../../data/agents';
@@ -14,11 +14,12 @@ export function Sidebar({ activeAgent, busyAgent, onAgentClick, sidebarKey }: Si
   const { lang } = useLang();
   const s = UI[lang];
   const agents = DATA[lang];
-  const listRef = useRef<HTMLDivElement>(null);
   const [onlineCount, setOnlineCount] = useState(0);
+  const [shownIds, setShownIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     setOnlineCount(0);
+    setShownIds(new Set());
     const total = AGENT_ORDER.length;
     let shown = 0;
     const iv = setInterval(() => {
@@ -30,11 +31,11 @@ export function Sidebar({ activeAgent, busyAgent, onAgentClick, sidebarKey }: Si
   }, [sidebarKey]);
 
   useEffect(() => {
-    if (!listRef.current) return;
-    const nodes = listRef.current.querySelectorAll<HTMLElement>('.agent');
-    nodes.forEach((node, idx) => {
-      node.classList.remove('in');
-      setTimeout(() => node.classList.add('in'), 220 + idx * 100);
+    setShownIds(new Set());
+    AGENT_ORDER.forEach((id, idx) => {
+      setTimeout(() => {
+        setShownIds(prev => new Set([...prev, id]));
+      }, 220 + idx * 100);
     });
   }, [sidebarKey]);
 
@@ -46,16 +47,17 @@ export function Sidebar({ activeAgent, busyAgent, onAgentClick, sidebarKey }: Si
           {onlineCount === 0 ? `— ${s.online}` : `${onlineCount} ${s.online}`}
         </span>
       </div>
-      <div className="agents" id="agentList" ref={listRef}>
+      <div className="agents" id="agentList">
         {AGENT_ORDER.map(id => {
           const a = agents[id];
           const isFeatured = id === 'profil';
           const isActive = activeAgent === id;
           const isBusy = busyAgent === id;
+          const isShown = shownIds.has(id);
           return (
             <div
               key={id}
-              className={`agent${isFeatured ? ' agent--feature' : ''}${isActive ? ' active' : ''}${isBusy ? ' busy' : ''}`}
+              className={`agent${isFeatured ? ' agent--feature' : ''}${isActive ? ' active' : ''}${isBusy ? ' busy' : ''}${isShown ? ' in' : ''}`}
               role="button"
               tabIndex={0}
               onClick={() => onAgentClick(id)}

@@ -17,9 +17,13 @@ import { Log } from './components/panel/Log';
 let msgCounter = 0;
 function nextId() { return String(++msgCounter); }
 
+type Theme = 'dark' | 'light';
+
 export default function App() {
   const { lang, setLang } = useLang();
-  const [messages, setMessages] = useState<MessageData[]>([]);
+  const [tabMessages, setTabMessages] = useState<Map<string, MessageData[]>>(
+    () => new Map([['welcome', []]])
+  );
   const [tabs, setTabs] = useState<Tab[]>([{ id: 'welcome', label: 'welcome' }]);
   const [activeTab, setActiveTab] = useState<string>('welcome');
   const [activeAgent, setActiveAgent] = useState<AgentId | null>(null);
@@ -28,38 +32,54 @@ export default function App() {
   const [inputValue, setInputValue] = useState('');
   const [sidebarKey, setSidebarKey] = useState(0);
   const [agentsOnline, setAgentsOnline] = useState(0);
+  const [theme, setTheme] = useState<Theme>('dark');
 
   const genRef = useRef(0);
   const chainRef = useRef<Promise<void>>(Promise.resolve());
   const langRef = useRef(lang);
   const runningRef = useRef(false);
   const autoBriefRef = useRef(true);
+  const activeTabRef = useRef('welcome');
 
   useEffect(() => { langRef.current = lang; }, [lang]);
   useEffect(() => { runningRef.current = running; }, [running]);
+  useEffect(() => { activeTabRef.current = activeTab; }, [activeTab]);
 
   useEffect(() => {
     document.documentElement.lang = lang;
   }, [lang]);
 
-  function appendMsg(msg: MessageData) {
-    setMessages(prev => [...prev, msg]);
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
+  function appendMsg(tabId: string, msg: MessageData) {
+    setTabMessages(prev => {
+      const next = new Map(prev);
+      next.set(tabId, [...(next.get(tabId) ?? []), msg]);
+      return next;
+    });
   }
 
-  function updateMsg(id: string, patch: Record<string, unknown>) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    setMessages(prev => prev.map(m => m.id === id ? { ...m, ...patch } as any : m));
+  function updateMsg(tabId: string, id: string, patch: Record<string, unknown>) {
+    setTabMessages(prev => {
+      const next = new Map(prev);
+      const msgs = next.get(tabId) ?? [];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      next.set(tabId, msgs.map(m => m.id === id ? { ...m, ...patch } as any : m));
+      return next;
+    });
   }
 
-  function activateTab(id: AgentId, label: string) {
+  function activateTab(id: AgentId, label: string, silent = false) {
     setTabs(prev => {
       if (prev.some(t => t.id === id)) return prev;
       return [...prev, { id, label }];
     });
-    setActiveTab(id);
+    if (!silent) setActiveTab(id);
   }
 
-  const runAgent = useCallback(async (id: AgentId) => {
+  const runAgent = useCallback(async (id: AgentId, silent = false) => {
     const g = genRef.current;
     const a = DATA[langRef.current][id];
     if (!a) return;
@@ -67,12 +87,18 @@ export default function App() {
     setRunning(true);
     setBusyAgent(id);
     setActiveAgent(id);
-    activateTab(id, a.tab);
 
-    const userId = nextId();
-    appendMsg({
+    // Clear tab content and create/activate tab
+    setTabMessages(prev => {
+      const next = new Map(prev);
+      next.set(id, []);
+      return next;
+    });
+    activateTab(id, a.tab, silent);
+
+    appendMsg(id, {
       kind: 'user',
-      id: userId,
+      id: nextId(),
       text: `${UI[langRef.current].runVerb} ${a.name}`,
     });
 
@@ -80,7 +106,7 @@ export default function App() {
     if (g !== genRef.current) { setRunning(false); setBusyAgent(null); setActiveAgent(null); return; }
 
     const agentMsgId = nextId();
-    appendMsg({
+    appendMsg(id, {
       kind: 'agent',
       id: agentMsgId,
       agentId: id,
@@ -99,9 +125,8 @@ export default function App() {
     await sleep(600);
     if (g !== genRef.current) { setRunning(false); setBusyAgent(null); setActiveAgent(null); return; }
 
-    updateMsg(agentMsgId, { status: 'done' } as Partial<MessageData>);
+    updateMsg(id, agentMsgId, { status: 'done' } as Partial<MessageData>);
 
-    // Approximate time to let animations complete before next agent can run
     const delays: Record<string, number> = {
       profile: 2800, book: 3200, timeline: 2000,
       cards: 2200, notes: 2000, stack: 1800, contact: 1200,
@@ -120,11 +145,16 @@ export default function App() {
     chainRef.current = chainRef.current.then(() => runAgent(id));
   }, [runAgent]);
 
+  const triggerSilent = useCallback((id: AgentId) => {
+    if (!DATA[langRef.current][id]) return;
+    chainRef.current = chainRef.current.then(() => runAgent(id, true));
+  }, [runAgent]);
+
   const runWelcome = useCallback((switched: boolean) => {
     const g = genRef.current;
     if (switched) {
       const s = UI[langRef.current];
-      appendMsg({
+      appendMsg('welcome', {
         kind: 'system-tool',
         id: nextId(),
         fn: 'set_language',
@@ -135,12 +165,12 @@ export default function App() {
     chainRef.current = chainRef.current.then(async () => {
       await sleep(switched ? 160 : 480);
       if (g !== genRef.current) return;
-      appendMsg({ kind: 'welcome', id: nextId(), gen: g });
+      appendMsg('welcome', { kind: 'welcome', id: nextId(), gen: g });
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Initial welcome + auto-brief
+  // Initial welcome + silent auto-brief
   const didInit = useRef(false);
   useEffect(() => {
     if (didInit.current) return;
@@ -149,16 +179,16 @@ export default function App() {
     chainRef.current = chainRef.current.then(() => sleep(650)).then(() => {
       if (autoBriefRef.current) {
         autoBriefRef.current = false;
-        trigger('profil');
+        triggerSilent('profil');
       }
     });
-  }, [runWelcome, trigger]);
+  }, [runWelcome, triggerSilent]);
 
   function doLangSwitch(newLang: Lang) {
     if (newLang === langRef.current || runningRef.current) return;
     genRef.current++;
     chainRef.current = Promise.resolve();
-    setMessages([]);
+    setTabMessages(new Map([['welcome', []]]));
     setTabs([{ id: 'welcome', label: 'welcome' }]);
     setActiveTab('welcome');
     setActiveAgent(null);
@@ -172,8 +202,32 @@ export default function App() {
   }
 
   function handleTabClick(id: AgentId | 'welcome') {
-    if (id === 'welcome') { setActiveTab('welcome'); return; }
-    trigger(id);
+    if (id === 'welcome') {
+      genRef.current++;
+      chainRef.current = Promise.resolve();
+      setTabMessages(new Map([['welcome', []]]));
+      setTabs([{ id: 'welcome', label: 'welcome' }]);
+      setActiveTab('welcome');
+      setActiveAgent(null);
+      setBusyAgent(null);
+      setRunning(false);
+      autoBriefRef.current = false;
+      runWelcome(false);
+      return;
+    }
+    setActiveTab(id);
+  }
+
+  function handleTabClose(id: string) {
+    setTabs(prev => prev.filter(t => t.id !== id));
+    setTabMessages(prev => {
+      const next = new Map(prev);
+      next.delete(id);
+      return next;
+    });
+    if (activeTabRef.current === id) {
+      setActiveTab('welcome');
+    }
   }
 
   function handleSubmit() {
@@ -193,7 +247,7 @@ export default function App() {
     if (r === 'clear') {
       genRef.current++;
       chainRef.current = Promise.resolve();
-      setMessages([]);
+      setTabMessages(new Map([['welcome', []]]));
       setTabs([{ id: 'welcome', label: 'welcome' }]);
       setActiveTab('welcome');
       setRunning(false);
@@ -201,22 +255,25 @@ export default function App() {
       runWelcome(false);
       return;
     }
-    if (r === 'help') { runWelcome(false); return; }
+    if (r === 'help') {
+      setActiveTab('welcome');
+      runWelcome(false);
+      return;
+    }
     if (r) {
-      // runAgent will add the user message
       trigger(r);
     } else {
       const safeText = escapeHtml(v);
       const g = genRef.current;
+      const tabId = activeTabRef.current;
       chainRef.current = chainRef.current.then(async () => {
         await sleep(160);
         if (g !== genRef.current) return;
-        appendMsg({ kind: 'fallback', id: nextId(), userText: safeText, gen: g });
+        appendMsg(tabId, { kind: 'fallback', id: nextId(), userText: safeText, gen: g });
       });
     }
   }
 
-  // Track agentsOnline count when sidebarKey changes
   useEffect(() => {
     setAgentsOnline(0);
     let count = 0;
@@ -232,7 +289,7 @@ export default function App() {
   return (
     <div className="app">
       <TitleBar />
-      <Tabs tabs={tabs} activeTab={activeTab} onTabClick={handleTabClick} />
+      <Tabs tabs={tabs} activeTab={activeTab} onTabClick={handleTabClick} onTabClose={handleTabClose} />
       <div className="shell">
         <Sidebar
           activeAgent={activeAgent}
@@ -241,16 +298,23 @@ export default function App() {
           sidebarKey={sidebarKey}
         />
         <main className="panel">
-          <Log messages={messages} onChipClick={trigger} />
+          <Log messages={tabMessages.get(activeTab) ?? []} onChipClick={trigger} />
           <Dock
             value={inputValue}
             onChange={setInputValue}
             onSubmit={handleSubmit}
             disabled={running}
+            onAgentClick={trigger}
           />
         </main>
       </div>
-      <StatusBar agentsOnline={agentsOnline} isReady={!running} onLangChange={doLangSwitch} />
+      <StatusBar
+        agentsOnline={agentsOnline}
+        isReady={!running}
+        onLangChange={doLangSwitch}
+        theme={theme}
+        onThemeToggle={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
+      />
     </div>
   );
 }
