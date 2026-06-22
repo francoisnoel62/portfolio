@@ -194,6 +194,7 @@
   .lnk{font-family:var(--mono);font-size:12px;color:var(--accent);display:inline-block;margin-top:12px;
     border-bottom:1px solid transparent;transition:.15s}
   .lnk:hover{border-color:var(--accent)}
+  button.lnk{background:none;border:0;border-bottom:1px solid transparent;cursor:pointer;padding:0}
 
   /* stack columns */
   .scols{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:14px 0 4px}
