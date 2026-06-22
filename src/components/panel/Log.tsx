@@ -19,11 +19,12 @@ interface ToolLineSystemData {
 interface LogProps {
   messages: MessageData[];
   onChipClick: (id: AgentId) => void;
+  onAgentClick: (id: AgentId) => void;
   onChapterClick: (chapter: BookChapter) => void;
   scrollTopKey: number;
 }
 
-export function Log({ messages, onChipClick, onChapterClick, scrollTopKey }: LogProps) {
+export function Log({ messages, onChipClick, onAgentClick, onChapterClick, scrollTopKey }: LogProps) {
   const logRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,7 +42,7 @@ export function Log({ messages, onChipClick, onChapterClick, scrollTopKey }: Log
             return <UserMessage key={msg.id} text={msg.text} />;
           }
           if (msg.kind === 'agent') {
-            return <AgentMessage key={msg.id} message={msg} onChapterClick={onChapterClick} />;
+            return <AgentMessage key={msg.id} message={msg} onChapterClick={onChapterClick} onAgentClick={onAgentClick} />;
           }
           if (msg.kind === 'fallback') {
             return (

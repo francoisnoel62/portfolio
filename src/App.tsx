@@ -9,6 +9,7 @@ import { sleep } from './hooks/useTypewriter';
 import type { MessageData } from './types';
 
 import { TitleBar } from './components/shell/TitleBar';
+import { FileTreePanel } from './components/shell/FileTreePanel';
 import { Tabs, type Tab } from './components/shell/Tabs';
 import { Sidebar } from './components/shell/Sidebar';
 import { Dock } from './components/shell/Dock';
@@ -35,6 +36,7 @@ export default function App() {
   const [agentsOnline, setAgentsOnline] = useState(0);
   const [theme, setTheme] = useState<Theme>('dark');
   const [logScrollTopKey, setLogScrollTopKey] = useState(0);
+  const [fileTreeOpen, setFileTreeOpen] = useState(false);
 
   const genRef = useRef(0);
   const chainRef = useRef<Promise<void>>(Promise.resolve());
@@ -304,7 +306,8 @@ export default function App() {
 
   return (
     <div className="app">
-      <TitleBar />
+      <TitleBar onMenuToggle={() => setFileTreeOpen(o => !o)} menuOpen={fileTreeOpen} />
+      <FileTreePanel isOpen={fileTreeOpen} onClose={() => setFileTreeOpen(false)} />
       <Tabs tabs={tabs} activeTab={activeTab} onTabClick={handleTabClick} onTabClose={handleTabClose} />
       <div className="shell">
         <Sidebar
@@ -314,7 +317,7 @@ export default function App() {
           sidebarKey={sidebarKey}
         />
         <main className="panel">
-          <Log messages={tabMessages.get(activeTab) ?? []} onChipClick={trigger} onChapterClick={handleChapterClick} scrollTopKey={logScrollTopKey} />
+          <Log messages={tabMessages.get(activeTab) ?? []} onChipClick={trigger} onAgentClick={trigger} onChapterClick={handleChapterClick} scrollTopKey={logScrollTopKey} />
           <Dock
             value={inputValue}
             onChange={setInputValue}

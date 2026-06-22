@@ -28,6 +28,7 @@ export interface AgentMessageData {
 interface AgentMessageProps {
   message: AgentMessageData;
   onChapterClick: (chapter: BookChapter) => void;
+  onAgentClick: (id: string) => void;
 }
 
 function IntroText({ text, gen }: { text: string; gen: number }) {
@@ -37,8 +38,8 @@ function IntroText({ text, gen }: { text: string; gen: number }) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function RendererSwitch({ type, data, gen, onChapterClick }: { type: string; data: any; gen: number; onChapterClick: (chapter: BookChapter) => void }) {
-  if (type === 'profile') return <ProfileRenderer data={data} gen={gen} />;
+function RendererSwitch({ type, data, gen, onChapterClick, onAgentClick }: { type: string; data: any; gen: number; onChapterClick: (chapter: BookChapter) => void; onAgentClick: (id: string) => void }) {
+  if (type === 'profile') return <ProfileRenderer data={data} gen={gen} onContactClick={() => onAgentClick('contact')} />;
   if (type === 'book') return <BookRenderer data={data} gen={gen} onChapterClick={onChapterClick} />;
   if (type === 'timeline') return <TimelineRenderer data={data} gen={gen} />;
   if (type === 'cards' || type === 'notes') return <CardsRenderer data={data} type={type} gen={gen} onChapterClick={onChapterClick} />;
@@ -47,7 +48,7 @@ function RendererSwitch({ type, data, gen, onChapterClick }: { type: string; dat
   return null;
 }
 
-export function AgentMessage({ message, onChapterClick }: AgentMessageProps) {
+export function AgentMessage({ message, onChapterClick, onAgentClick }: AgentMessageProps) {
   const colorStyle = message.color ? { color: message.color } : undefined;
 
   return (
@@ -62,7 +63,7 @@ export function AgentMessage({ message, onChapterClick }: AgentMessageProps) {
         {message.status === 'done' && (
           <>
             <IntroText text={message.intro} gen={message.gen} />
-            <RendererSwitch type={message.type} data={message.data} gen={message.gen} onChapterClick={onChapterClick} />
+            <RendererSwitch type={message.type} data={message.data} gen={message.gen} onChapterClick={onChapterClick} onAgentClick={onAgentClick} />
           </>
         )}
       </div>

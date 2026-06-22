@@ -11,7 +11,7 @@ interface ProfileData {
   cta2: string;
 }
 
-export function ProfileRenderer({ data, gen }: { data: ProfileData; gen: number }) {
+export function ProfileRenderer({ data, gen, onContactClick }: { data: ProfileData; gen: number; onContactClick?: () => void }) {
   const metricsRef = useRef<HTMLDivElement>(null);
   const signalsRef = useRef<HTMLDivElement>(null);
 
@@ -48,7 +48,7 @@ export function ProfileRenderer({ data, gen }: { data: ProfileData; gen: number 
         ))}
       </div>
       <div className="cbtns" style={{ marginTop: '14px' }}>
-        <a className="cbtn cbtn--solid" href="mailto:francoisnoel62@gmail.com">{data.cta1}</a>
+        <button className="cbtn cbtn--solid" onClick={onContactClick}>{data.cta1}</button>
         <a className="cbtn" href="/assets/cv-francois-noel.pdf" target="_blank" rel="noopener">{data.cta2} ↗</a>
       </div>
     </>

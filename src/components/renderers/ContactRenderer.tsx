@@ -11,8 +11,8 @@ export function ContactRenderer({ gen }: { data: unknown; gen: number }) {
     <div ref={ref}>
       <div className="contact">
         <div className="cbtns">
-          <a className="cbtn cbtn--solid" href="mailto:francoisnoel62@gmail.com">
-            {lang === 'fr' ? 'Me contacter' : 'Contact me'}
+          <a className="cbtn cbtn--solid" href="https://mail.google.com/mail/?view=cm&fs=1&to=francoisnoel62@gmail.com" target="_blank" rel="noopener">
+            {lang === 'fr' ? 'Me contacter' : 'Contact me'} ↗
           </a>
           <a className="cbtn" href="/assets/cv-francois-noel.pdf" target="_blank" rel="noopener">
             {lang === 'fr' ? 'Télécharger le CV' : 'Download CV'} ↗

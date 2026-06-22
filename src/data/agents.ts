@@ -11,7 +11,7 @@ export const DATA: Record<Lang, Record<AgentId, any>> = {
       profil:{
         name:'@profil', role:'résumé recruteur · 30 secondes', badge:'◎', tab:'profile.md', color:'var(--accent)',
         type:'profile', tool:{fn:'analyze', arg:'cv + portfolio --target fullstack-senior', res:'4 signaux forts'},
-        intro:"Lecture rapide : Je suis un développeur fullstack senior qui combine exécution produit, backend solide, frontend moderne et culture IA appliquée. Le signal rare : je passe du besoin métier au logiciel fiable, je sais quand un agent IA est la mauvaise réponse autant que la bonne, puis je l’explique et le transmets.",
+        intro:"Je sais identifier quand l’IA apporte un avantage compétitif, mais aussi quand elle ajoute de la complexité inutile. Cette approche pragmatique me permet de concevoir des produits qui résolvent des problèmes concrets plutôt que de suivre les tendances du moment.",
         data:{
           metrics:[
             ['8 ans','de code en production'],
@@ -22,7 +22,7 @@ export const DATA: Record<Lang, Record<AgentId, any>> = {
           signals:[
             {k:"Produit", t:"Je construis pour un usage réel", d:"Revise, outils internes, add-ins Office et modules métiers : le code sert une expérience et un workflow, pas une démo."},
             {k:"Production", t:"Je connais les contraintes de livraison", d:"APIs, données, qualité, revues, documentation, formation et maintien d’applications en contexte entreprise."},
-            {k:"IA appliquée", t:"Je sais quand ne pas faire un agent", d:"Réécriture, analyse narrative, workflows agentiques, context engineering — mais surtout le jugement d’architecture : un agent là où un workflow déterministe suffit, c’est de la dette. Je tranche avant de coder."},
+            {k:"IA appliquée", t:"Je sais quand ne pas faire un agent", d:"Réécriture assistée par IA, analyse narrative, workflows agentiques, context engineering, RAG, automatisation métier : je maîtrise ces outils, mais mon véritable métier est de faire les bons choix d’architecture."},
             {k:"Métier", t:"Je modélise avant d’automatiser", d:"Dix ans d’hôtellerie de luxe ont installé une discipline : écouter, comprendre le processus, livrer fiable."}
           ],
           cta1:'Me contacter', cta2:'Télécharger le CV'
@@ -31,7 +31,7 @@ export const DATA: Record<Lang, Record<AgentId, any>> = {
       livre:{
         name:'@livre-ia', role:'preuve d’expertise IA', badge:'✦', tab:'ai-book.md', color:'var(--accent)',
         type:'book', tool:{fn:'open', arg:'writing/from-demo-to-production.md', res:'manuscrit · ~134 p.'},
-        intro:"Mon ouvrage en cours, né de 12 mois à construire des agents IA en production réelle — avec de vrais utilisateurs et de vraies conséquences. Ma thèse : quand un agent échoue, le coupable est rarement le modèle. C’est l’architecture.",
+        intro:"Cet ouvrage est le fruit de douze mois passés à concevoir, déployer et faire évoluer des agents IA dans des environnements réels, avec de vrais utilisateurs, de vraies contraintes et de vraies conséquences.\n\nIl ne s’agit pas d’un guide théorique sur les modèles, mais d’un retour d’expérience sur ce qui fait réellement la différence entre une démonstration impressionnante et un système fiable en production.\n\nLa thèse est simple : lorsqu’un agent échoue, le problème vient rarement du modèle. Dans la majorité des cas, la cause se trouve dans l’architecture, le contexte, les garde-fous, les workflows ou les choix de conception qui l’entourent.\n\nCet essai explore ce constat à travers des exemples concrets, des échecs observés sur le terrain et des principes applicables à la construction d’agents capables de survivre au monde réel.",
         data:{
           kicker:"essai · à paraître 2026", title:"From Demo<br>to Production",
           sub:"Building AI Agents That Survive the Real World",
@@ -54,7 +54,7 @@ export const DATA: Record<Lang, Record<AgentId, any>> = {
       parcours:{
         name:'@parcours', role:'8 ans de code, 10 ans d’hôtellerie', badge:'⏳', tab:'parcours.md',
         type:'timeline', tool:{fn:'read_file', arg:'career/timeline.json', res:'4 étapes'},
-        intro:"Reconversion assumée. J’ai passé dix ans dans l’hôtellerie de luxe avant de faire du code mon métier en 2017. Voici la trajectoire.",
+        intro:"Avant le développement logiciel, j’ai passé dix années dans l’hôtellerie de luxe, au contact direct des clients, des opérations et des exigences du terrain.\n\nEn 2017, j’ai choisi de faire du code mon métier. Cette transition n’a pas effacé mon parcours précédent : elle l’a enrichi. Elle m’a apporté une compréhension concrète des enjeux métier, du service, de la qualité d’exécution et de la réalité opérationnelle que les logiciels doivent servir.\n\nVoici la trajectoire qui m’a conduit du terrain à l’ingénierie logicielle.",
         data:[
           ["— 2016","L’hôtellerie de luxe","10 ans à lire un besoin, modéliser un service et livrer une expérience fiable. La matrice de ma façon de concevoir un logiciel."],
           ['2016 — 18','Le pari','Reconversion et DUT Informatique (IUT Paris-Descartes). La passion du code cesse d’être un hobby.'],
@@ -65,7 +65,7 @@ export const DATA: Record<Lang, Record<AgentId, any>> = {
       realisations:{
         name:'@réalisations', role:'produits livrés, pas des slides', badge:'◆', tab:'projects.json',
         type:'cards', tool:{fn:'query', arg:'projects --order recent', res:'6 résultats'},
-        intro:"Des preuves livrées : produits personnels, side projects publics et missions en entreprise. Chaque carte expose le contexte, la responsabilité, l’impact et le niveau d’autonomie.",
+        intro:"Cette sélection regroupe des produits personnels, des side projects et des missions professionnelles représentatifs de mon parcours.",
         data:[
           {lead:true, t:"revise.studio", when:"fondateur · SaaS en bêta", d:"Plateforme d’écriture tout-en-un pour auteurs de fiction francophones : idéation, rédaction, correction, édition, publication. Fonctions IA maison — réécriture en 3 variantes, analyse narrative sur 5 axes, développement de scènes, bible de projet. Conçu, construit et lancé par moi.", tags:["Fondateur","Next.js","Applications IA","LLM","SaaS"], proof:["Produit livré","Autonomie complète","IA appliquée","Vision produit"], link:"https://revise.studio", linkTxt:"revise.studio ↗"},
           {t:"Hotelix", when:"fondateur · SaaS hôtellerie", d:"Logiciel de gestion hôtelière : planification des chambres, suivi des équipes, traitement des tickets opérationnels (maintenance, ménage, réclamations, facturation). Cas d’école de ma double culture : l’analyse de 200 tickets réels a montré que 93 % étaient déterministes — d’où un workflow + LLM ciblé sur les 7 % ambigus, plutôt que le multi-agent envisagé.", tags:["Fondateur","Next.js","TypeScript","PostgreSQL","Multi-tenant"], proof:["Métier hôtelier","Workflow > agent","Multi-tenant","Décision d’archi"], chapter:"11.4_cas_hotelix.md", linkTxt:"lire le cas ↗"},
@@ -78,7 +78,7 @@ export const DATA: Record<Lang, Record<AgentId, any>> = {
       stack:{
         name:'@stack', role:'langages, IA, pratiques', badge:'⚙', tab:'stack.toml',
         type:'stack', tool:{fn:'scan', arg:'competencies.toml', res:'3 domaines'},
-        intro:"Pas une liste de logos : une matrice de ce que je sais réellement prendre en charge dans un produit fullstack senior.",
+        intro:"Cette matrice présente ce que je suis réellement capable de prendre en charge dans un produit full-stack : architecture, backend, frontend, bases de données, qualité logicielle, déploiement, observabilité, intégration d'IA et pilotage technique.",
         data:[
           {cls:'scol--code', h:'Architecture produit', d:'Backends Django, APIs REST, données PostgreSQL, intégration de services et frontends Next.js pensés pour durer.', items:['Python','Django','TypeScript','Next.js','PostgreSQL','REST APIs']},
           {cls:'scol--craft', h:'Seniorité delivery', d:'Au-delà du code : traduire un besoin flou en architecture, livrer fiable, documenter, former les équipes et corriger les mauvais choix avant qu’ils deviennent de la dette. Une séniorité d’usage, pas de titre.', items:['TDD','Clean architecture','Revue de code','Documentation','Formation','Git']},
@@ -88,7 +88,7 @@ export const DATA: Record<Lang, Record<AgentId, any>> = {
       notes:{
         name:'@field-notes', role:'écrits sur l’IA', badge:'✎', tab:'writing/index.md',
         type:'notes', tool:{fn:'fetch', arg:'writing/index.md', res:'3 notes'},
-        intro:"Un AI advocate n’écrit pas que du code. Quelques notes de terrain.",
+        intro:"Construire des logiciels est une partie du métier.\n\nComprendre pourquoi certains réussissent, pourquoi d’autres échouent, comment les équipes travaillent, comment les utilisateurs contournent les systèmes et comment l’IA modifie ces équilibres en est une autre.\n\nJ’écris pour documenter ces observations, partager des retours d’expérience et mettre à l’épreuve certaines idées reçues sur la technologie, les agents IA et la construction de produits.\n\nDes notes de terrain, avant tout.",
         readLabel:"lire ↗",
         data:[
           ['// context engineering','Le contexte est le nouveau code','La valeur d’une app LLM ne se joue plus dans le prompt, mais dans l’orchestration du contexte qu’on lui donne à raisonner.','3.1_le_contexte_nest_pas_un_parametre.md'],
@@ -99,14 +99,14 @@ export const DATA: Record<Lang, Record<AgentId, any>> = {
       contact:{
         name:'@contact', role:'disponibilités & liens', badge:'✉', tab:'contact.vcard',
         type:'contact', tool:{fn:'open', arg:'contact.vcard', res:'prêt'},
-        intro:"Je suis ouvert aux opportunités fullstack senior avec une forte dimension produit, Python/Django, TypeScript/Next.js et IA appliquée. Voici les liens directs."
+        intro:"Je recherche des opportunités full-stack senior où je peux contribuer au-delà du code : compréhension métier, conception produit, architecture, développement et intégration d'IA appliquée.\n\nMa stack principale s'articule autour de Python/Django, TypeScript/Next.js et des technologies modernes de développement web.\n\nVous souhaitez échanger sur un poste, une mission ou un projet ? Voici les liens directs pour me contacter et consulter mon travail."
       }
     },
     en:{
       profil:{
         name:'@profile', role:'recruiter brief · 30 seconds', badge:'◎', tab:'profile.md', color:'var(--accent)',
         type:'profile', tool:{fn:'analyze', arg:'cv + portfolio --target senior-fullstack', res:'4 strong signals'},
-        intro:"Fast read: I'm a senior fullstack developer combining product execution, solid backend work, modern frontend craft and practical AI culture. The rare signal: I move from business need to reliable software, I know when an AI agent is the wrong answer as much as the right one, then I explain and scale that knowledge.",
+        intro:"I know how to identify when AI delivers a competitive edge — and when it only adds unnecessary complexity. This pragmatic approach lets me design products that solve real problems rather than chase the latest trends.",
         data:{
           metrics:[
             ['8 yrs','coding in production'],
@@ -117,7 +117,7 @@ export const DATA: Record<Lang, Record<AgentId, any>> = {
           signals:[
             {k:'Product', t:'I build for real usage', d:'Revise, internal tools, Office add-ins and business modules: the code serves an experience and a workflow, not a demo.'},
             {k:'Production', t:'I know delivery constraints', d:'APIs, data, quality standards, reviews, documentation, training and maintaining applications in company contexts.'},
-            {k:'Applied AI', t:'I know when not to build an agent', d:'Rewriting, narrative analysis, agentic workflows, context engineering — but above all the architectural judgment: an agent where a deterministic workflow would do is just debt. I decide before I code.'},
+            {k:'Applied AI', t:'I know when not to build an agent', d:'AI-assisted rewriting, narrative analysis, agentic workflows, context engineering, RAG, business automation: I know these tools, but my real craft is making the right architecture calls.'},
             {k:'Domain', t:'I model before automating', d:'Ten years in luxury hospitality built the discipline to listen, understand the process and deliver reliably.'}
           ],
           cta1:'Contact him', cta2:'Download CV'
@@ -126,7 +126,7 @@ export const DATA: Record<Lang, Record<AgentId, any>> = {
       livre:{
         name:'@ai-book', role:'AI expertise proof', badge:'✦', tab:'ai-book.md', color:'var(--accent)',
         type:'book', tool:{fn:'open', arg:'writing/from-demo-to-production.md', res:'manuscript · ~134 p.'},
-        intro:"My work in progress, born from 12 months building AI agents in real production — with real users and real consequences. My thesis: when an agent fails, the model is rarely to blame. It’s the architecture.",
+        intro:"This book grew out of twelve months spent designing, deploying and iterating on AI agents in real environments — with real users, real constraints and real consequences.\n\nThis is not a theoretical guide to models, but a field report on what actually makes the difference between an impressive demo and a reliable production system.\n\nThe thesis is simple: when an agent fails, the problem is rarely the model. In most cases, the cause lies in the architecture, the context, the guardrails, the workflows or the design choices surrounding it.\n\nThis essay explores that observation through concrete examples, failures observed in the field and principles applicable to building agents capable of surviving the real world.",
         data:{
           kicker:"essay · coming 2026", title:"From Demo<br>to Production",
           sub:"Building AI Agents That Survive the Real World",
@@ -149,7 +149,7 @@ export const DATA: Record<Lang, Record<AgentId, any>> = {
       parcours:{
         name:'@career', role:'8 yrs of code, 10 yrs in hospitality', badge:'⏳', tab:'career.md',
         type:'timeline', tool:{fn:'read_file', arg:'career/timeline.json', res:'4 steps'},
-        intro:"An intentional career change. I spent ten years in luxury hospitality before making code my craft in 2017. Here’s the path.",
+        intro:"Before software development, I spent ten years in luxury hospitality, in direct contact with clients, operations and the demands of the field.\n\nIn 2017, I chose to make code my craft. That transition didn’t erase what came before — it enriched it. It gave me a concrete understanding of business challenges, service, execution quality and the operational reality that software must serve.\n\nHere is the path that took me from the field to software engineering.",
         data:[
           ['— 2016','Luxury hospitality','Ten years reading a need, modeling a service and delivering a reliable experience. The matrix of how I design software.'],
           ['2016 — 18','The leap','Career change and a CS degree (IUT Paris-Descartes). Coding stops being a hobby.'],
@@ -160,7 +160,7 @@ export const DATA: Record<Lang, Record<AgentId, any>> = {
       realisations:{
         name:'@work', role:'shipped products, not slides', badge:'◆', tab:'projects.json',
         type:'cards', tool:{fn:'query', arg:'projects --order recent', res:'6 results'},
-        intro:"Shipped proof: personal products, public side projects and company work. Each card makes the context, responsibility, impact and autonomy level scannable.",
+        intro:"This selection brings together personal products, side projects and professional assignments representative of my career.",
         data:[
           {lead:true, t:'revise.studio', when:'founder · SaaS in beta', d:'All-in-one writing platform for French-language fiction authors: ideation, drafting, editing, layout, publishing. In-house AI features — 3-variant rewriting, 5-axis narrative analysis, scene development, project bible. Designed, built and shipped by me.', tags:['Founder','Next.js','AI apps','LLM','SaaS'], proof:['Shipped product','Full autonomy','Applied AI','Product vision'], link:'https://revise.studio', linkTxt:'revise.studio ↗'},
           {t:'Hotelix', when:'founder · hospitality SaaS', d:'Hotel management software: room planning, team tracking, operational ticket handling (maintenance, housekeeping, complaints, billing). A textbook case of my dual culture: analyzing 200 real tickets showed 93% were deterministic — hence a workflow + LLM targeted at the 7% ambiguous cases, rather than the multi-agent system first considered.', tags:['Founder','Next.js','TypeScript','PostgreSQL','Multi-tenant'], proof:['Hospitality domain','Workflow > agent','Multi-tenant','Architecture call'], chapter:'11.4_cas_hotelix.md', linkTxt:'read the case ↗'},
@@ -173,7 +173,7 @@ export const DATA: Record<Lang, Record<AgentId, any>> = {
       stack:{
         name:'@stack', role:'languages, AI, practices', badge:'⚙', tab:'stack.toml',
         type:'stack', tool:{fn:'scan', arg:'competencies.toml', res:'3 areas'},
-        intro:"Not a logo list: a matrix of what I can actually own in a senior fullstack product role.",
+        intro:"This matrix shows what I can actually own in a full-stack product: architecture, backend, frontend, databases, software quality, deployment, observability, AI integration and technical leadership.",
         data:[
           {cls:'scol--code', h:'Product architecture', d:'Django backends, REST APIs, PostgreSQL data, service integration and durable Next.js frontends.', items:['Python','Django','TypeScript','Next.js','PostgreSQL','REST APIs']},
           {cls:'scol--craft', h:'Delivery seniority', d:'Beyond the code: turning a fuzzy need into architecture, shipping reliably, documenting, training teams and fixing bad calls before they become debt. Seniority by impact, not by title.', items:['TDD','Clean architecture','Code review','Documentation','Training','Git']},
@@ -183,7 +183,7 @@ export const DATA: Record<Lang, Record<AgentId, any>> = {
       notes:{
         name:'@field-notes', role:'writing on AI', badge:'✎', tab:'writing/index.md',
         type:'notes', tool:{fn:'fetch', arg:'writing/index.md', res:'3 notes'},
-        intro:"An AI advocate doesn’t only write code. A few field notes.",
+        intro:"Building software is one part of the craft.\n\nUnderstanding why some products succeed, why others fail, how teams work, how users work around systems and how AI is shifting these dynamics is another.\n\nI write to document these observations, share experience and challenge some received ideas about technology, AI agents and product building.\n\nField notes, above all.",
         readLabel:"read ↗",
         data:[
           ['// context engineering','Context is the new code','The value of an LLM app no longer lives in the prompt, but in orchestrating the context you give it to reason over.','3.1_le_contexte_nest_pas_un_parametre.md'],
@@ -194,7 +194,7 @@ export const DATA: Record<Lang, Record<AgentId, any>> = {
       contact:{
         name:'@contact', role:'availability & links', badge:'✉', tab:'contact.vcard',
         type:'contact', tool:{fn:'open', arg:'contact.vcard', res:'ready'},
-        intro:"I'm open to senior fullstack opportunities with a strong product angle, Python/Django, TypeScript/Next.js and applied AI. Here are the direct links."
+        intro:"I'm looking for senior full-stack opportunities where I can contribute beyond the code: business understanding, product design, architecture, development and applied AI integration.\n\nMy main stack is built around Python/Django, TypeScript/Next.js and modern web development technologies.\n\nInterested in discussing a role, a contract or a project? Here are the direct links to reach me and review my work."
       }
     }
   };
