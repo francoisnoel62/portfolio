@@ -8,6 +8,7 @@ import { StackRenderer } from '../renderers/StackRenderer';
 import { ContactRenderer } from '../renderers/ContactRenderer';
 import { useTypewriter } from '../../hooks/useTypewriter';
 import type { BookChapter } from '../../data/book-chapters';
+import type { AgentId } from '../../data/agents';
 
 export interface AgentMessageData {
   kind: 'agent';
@@ -28,7 +29,7 @@ export interface AgentMessageData {
 interface AgentMessageProps {
   message: AgentMessageData;
   onChapterClick: (chapter: BookChapter) => void;
-  onAgentClick: (id: string) => void;
+  onAgentClick: (id: AgentId) => void;
 }
 
 function IntroText({ text, gen }: { text: string; gen: number }) {
@@ -38,7 +39,7 @@ function IntroText({ text, gen }: { text: string; gen: number }) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function RendererSwitch({ type, data, gen, onChapterClick, onAgentClick }: { type: string; data: any; gen: number; onChapterClick: (chapter: BookChapter) => void; onAgentClick: (id: string) => void }) {
+function RendererSwitch({ type, data, gen, onChapterClick, onAgentClick }: { type: string; data: any; gen: number; onChapterClick: (chapter: BookChapter) => void; onAgentClick: (id: AgentId) => void }) {
   if (type === 'profile') return <ProfileRenderer data={data} gen={gen} onContactClick={() => onAgentClick('contact')} />;
   if (type === 'book') return <BookRenderer data={data} gen={gen} onChapterClick={onChapterClick} />;
   if (type === 'timeline') return <TimelineRenderer data={data} gen={gen} />;
