@@ -41,7 +41,7 @@ function RendererSwitch({ type, data, gen, onChapterClick }: { type: string; dat
   if (type === 'profile') return <ProfileRenderer data={data} gen={gen} />;
   if (type === 'book') return <BookRenderer data={data} gen={gen} onChapterClick={onChapterClick} />;
   if (type === 'timeline') return <TimelineRenderer data={data} gen={gen} />;
-  if (type === 'cards' || type === 'notes') return <CardsRenderer data={data} type={type} gen={gen} />;
+  if (type === 'cards' || type === 'notes') return <CardsRenderer data={data} type={type} gen={gen} onChapterClick={onChapterClick} />;
   if (type === 'stack') return <StackRenderer data={data} gen={gen} />;
   if (type === 'contact') return <ContactRenderer data={data} gen={gen} />;
   return null;
