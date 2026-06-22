@@ -46,7 +46,7 @@ export const DATA: Record<Lang, Record<AgentId, any>> = {
             "<b>Ajouter l’évaluation après coup.</b> L’intégrer dès le jour zéro."
           ],
           note:"// méta : vous êtes dans un agent. Ce livre explique comment en bâtir qui survivent à la production.",
-          cta1:"Être prévenu de la sortie", cta2:"Lire l’introduction ↗",
+          cta1:"Télécharger l’extrait (intro + chap. 1–4)", cta2:"Être prévenu de la sortie",
           mailtoSubj:"From%20Demo%20to%20Production%20%E2%80%94%20me%20pr%C3%A9venir%20de%20la%20sortie",
           chapters: BOOK_CHAPTERS
         }
@@ -141,7 +141,7 @@ export const DATA: Record<Lang, Record<AgentId, any>> = {
             "<b>Bolting on evaluation later.</b> Build it in from day zero."
           ],
           note:"// meta: you’re inside an agent. This book explains how to build ones that survive production.",
-          cta1:"Get notified at launch", cta2:"Read the introduction ↗",
+          cta1:"Download the extract (intro + chap. 1–4)", cta2:"Get notified at launch",
           mailtoSubj:"From%20Demo%20to%20Production%20%E2%80%94%20notify%20me%20at%20launch",
           chapters: BOOK_CHAPTERS
         }

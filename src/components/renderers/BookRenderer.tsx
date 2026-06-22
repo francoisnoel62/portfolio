@@ -1,6 +1,7 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useStagger } from '../../hooks/useStagger';
 import type { BookChapter } from '../../data/book-chapters';
+import { EmailGateModal } from '../EmailGateModal';
 
 interface BookData {
   kicker: string;
@@ -18,6 +19,7 @@ interface BookData {
 
 export function BookRenderer({ data, gen, onChapterClick }: { data: BookData; gen: number; onChapterClick: (chapter: BookChapter) => void }) {
   const bookRef = useRef<HTMLDivElement>(null);
+  const [showModal, setShowModal] = useState(false);
 
   useStagger(bookRef as React.RefObject<HTMLElement>, '.book', gen);
 
@@ -54,15 +56,25 @@ export function BookRenderer({ data, gen, onChapterClick }: { data: BookData; ge
           </div>
           <p className="note">{data.note}</p>
           <div className="cbtns" style={{ marginTop: '14px' }}>
-            <a
+            <button
               className="cbtn cbtn--solid"
-              href={`mailto:francoisnoel62@gmail.com?subject=${data.mailtoSubj}`}
+              type="button"
+              onClick={() => setShowModal(true)}
             >
               {data.cta1}
+            </button>
+            <a
+              className="cbtn"
+              href={`https://mail.google.com/mail/?view=cm&to=francoisnoel62@gmail.com&su=${data.mailtoSubj}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {data.cta2}
             </a>
           </div>
         </div>
       </div>
+      {showModal && <EmailGateModal onClose={() => setShowModal(false)} />}
     </div>
   );
 }
