@@ -6,11 +6,16 @@
   "scripts": {
     "dev": "vite",
     "build": "node node_modules/typescript/bin/tsc -b && node node_modules/vite/bin/vite.js build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sync-book": "powershell -ExecutionPolicy Bypass -File scripts/sync-book.ps1"
   },
   "dependencies": {
+    "@types/react-syntax-highlighter": "^15.5.13",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "react-markdown": "^10.1.0",
+    "react-syntax-highlighter": "^16.1.1",
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@types/react": "^19.1.6",
