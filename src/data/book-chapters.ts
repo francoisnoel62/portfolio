@@ -11,8 +11,9 @@ const rawFiles = import.meta.glob('../content/book/*.md', {
 }) as Record<string, string>;
 
 function parseFrontmatter(raw: string): { titre: string; content: string } {
-  const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
-  if (!match) return { titre: '', content: raw };
+  const normalized = raw.replace(/\r\n/g, '\n');
+  const match = normalized.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  if (!match) return { titre: '', content: normalized };
   const titre = match[1].match(/^titre:\s*"(.+?)"/m)?.[1] ?? '';
   return { titre, content: match[2] };
 }
