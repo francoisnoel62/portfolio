@@ -27,7 +27,7 @@ export const UI: Record<Lang, UIStrings> = {
     tbSession: "session d'agents",
     online: "en ligne", session: "session", model: "modèle",
     ready: "prêt", agentsWord: "agents", ctx: "contexte",
-    placeholder: "posez une question, ou tapez /help — ex. « résumé 30 secondes »",
+    placeholder: "posez une question, ou tapez /help, ex. « résumé 30 secondes »",
     hintPrefix: "Agents en ligne\u00a0:",
     hintSuffix: "Cliquez-en un, ou écrivez.",
     hintAgents: [
@@ -50,7 +50,7 @@ export const UI: Record<Lang, UIStrings> = {
     tbSession: "agent session",
     online: "online", session: "session", model: "model",
     ready: "ready", agentsWord: "agents", ctx: "context",
-    placeholder: 'ask anything, or type /help — e.g. "30-second brief"',
+    placeholder: 'ask anything, or type /help, e.g. "30-second brief"',
     hintPrefix: "Agents online\u00a0:",
     hintSuffix: "Click one, or type.",
     hintAgents: [
