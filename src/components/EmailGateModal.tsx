@@ -43,7 +43,7 @@ export function EmailGateModal({ onClose }: Props) {
           <>
             <p className="modal__title" id="modal-title">Télécharger l'extrait</p>
             <p className="modal__sub">
-              Introduction + Partie 1 (chapitres 1.1–1.4) — environ 35 pages.
+              Introduction + Partie 1 (chapitres 1.1–1.4), environ 35 pages.
               <br />Laisse ton email pour recevoir le livre complet à sa sortie.
             </p>
             <form onSubmit={handleSubmit}>
